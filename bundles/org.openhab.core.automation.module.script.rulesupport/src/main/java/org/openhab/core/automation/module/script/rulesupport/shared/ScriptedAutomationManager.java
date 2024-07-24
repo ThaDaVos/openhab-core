@@ -114,7 +114,8 @@ public class ScriptedAutomationManager {
     }
 
     public Rule addUnmanagedRule(Rule element) {
-        RuleBuilder builder = RuleBuilder.create(element.getUID());
+        String ruleUid = element.getUID();
+        RuleBuilder builder = RuleBuilder.create(ruleUid);
 
         String name = element.getName();
         if (name == null || name.isEmpty()) {
@@ -125,6 +126,11 @@ public class ScriptedAutomationManager {
         }
 
         builder.withName(name).withDescription(element.getDescription()).withTags(element.getTags());
+
+        String templateUid = element.getTemplateUID();
+        if (templateUid.isEmpty() == false && ruleUid.equals(templateUid) == false) {
+            builder.withTemplateUID(templateUid);
+        }
 
         // used for numbering the modules of the rule
         int moduleIndex = 1;
